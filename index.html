@@ -74,7 +74,6 @@
                 date: "18 November 2025",
                 category: "Fisika",
                 color: "text-gray-300", 
-                icon: icons.Award ? <Award className="w-6 h-6 text-gray-300" /> : null
             },
             {
                 id: 2,
@@ -85,7 +84,6 @@
                 date: "18 November 2025",
                 category: "Matematika",
                 color: "text-gray-300",
-                icon: icons.Award ? <Award className="w-6 h-6 text-gray-300" /> : null
             },
             {
                 id: 3,
@@ -96,18 +94,16 @@
                 date: "19 Oktober 2025",
                 category: "Matematika",
                 color: "text-blue-400",
-                icon: icons.BookOpen ? <BookOpen className="w-6 h-6 text-blue-400" /> : null
             },
             {
                 id: 4,
                 title: "ESCO (Engineering Science Competition)",
                 level: "Perguruan Tinggi",
                 organizer: "HIMATIKA HARMONI",
-                result: "Finalis (Peringkat 1 Dari 1)",
+                result: "Finalis (Peringkat 1)",
                 date: "17 September 2025",
                 category: "Matematika",
                 color: "text-yellow-400", 
-                icon: icons.Star ? <Star className="w-6 h-6 text-yellow-400" /> : null
             }
         ];
 
@@ -257,35 +253,33 @@
 
                             <div className="grid md:grid-cols-2 gap-8">
                                 {achievements.map((item) => (
-                                    <div key={item.id} className="bg-slate-800/50 backdrop-blur rounded-2xl p-6 border border-slate-700 card-hover transition-all duration-300">
-                                        <div className="flex justify-between items-start mb-4">
-                                            <div className="p-3 bg-slate-900 rounded-lg border border-slate-700">
-                                                {item.icon}
-                                            </div>
-                                            <span className="text-xs font-mono text-slate-500 bg-slate-900 px-2 py-1 rounded border border-slate-800">
+                                    <div key={item.id} className="bg-slate-800/50 backdrop-blur rounded-2xl p-6 border border-slate-700 card-hover transition-all duration-300 flex flex-col">
+                                        <div className="flex justify-between items-start mb-4 gap-4">
+                                            <h3 className="text-xl font-bold text-white leading-tight">{item.title}</h3>
+                                            <span className="text-xs font-mono text-slate-500 bg-slate-900 px-2 py-1 rounded border border-slate-800 whitespace-nowrap shrink-0">
                                                 {item.date}
                                             </span>
                                         </div>
-                                        <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
                                         
-                                        <div className="space-y-2 mb-6">
+                                        <div className="space-y-2 mb-6 flex-grow">
                                             <div className="flex items-center gap-2 text-sm text-slate-400">
-                                                {MapPin && <MapPin size={14} />}
-                                                {item.organizer}
+                                                {MapPin && <MapPin size={14} className="shrink-0" />}
+                                                <span>{item.organizer}</span>
                                             </div>
                                             <div className="flex items-center gap-2 text-sm text-slate-400">
-                                                {Star && <Star size={14} />}
-                                                {item.level}
+                                                {Star && <Star size={14} className="shrink-0" />}
+                                                <span>{item.level}</span>
                                             </div>
                                         </div>
 
-                                        <div className="flex items-center justify-between pt-4 border-t border-slate-700/50">
+                                        <div className="flex items-center justify-between pt-4 border-t border-slate-700/50 mt-auto">
                                             <span className={`font-bold ${item.color} flex items-center gap-2`}>
                                                 {item.result}
                                             </span>
-                                            <button className="text-xs text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1">
+                                            {/* Changed button to anchor tag with placeholder href */}
+                                            <a href="#" className="text-xs text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1">
                                                 Lihat Sertifikat {ExternalLink && <ExternalLink size={12} />}
-                                            </button>
+                                            </a>
                                         </div>
                                     </div>
                                 ))}
