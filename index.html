@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portofolio Rahman Hanif Putra (OSFA)</title>
+    
+    <!-- React & ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons (Fixed Version) -->
+    <script src="https://unpkg.com/lucide-react@0.263.1/dist/umd/lucide-react.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a; /* Slate 900 */
+            color: #f8fafc;
+            /* scroll-behavior: smooth; <- Kita handle via JS untuk offset navbar */
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2563eb;
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.15);
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        
+        const icons = window.lucideReact || {};
+        const { Menu, X, Award, BookOpen, User, Mail, Instagram, Linkedin, ExternalLink, Download, MapPin, Calendar, Star } = icons;
+
+        const achievements = [
+            {
+                id: 1,
+                title: "OSN-PS 2025 Bidang Fisika",
+                level: "Tingkat Nasional",
+                organizer: "Sentral Olimpiade (Pahlawan Sains)",
+                result: "Silver Medal",
+                date: "18 November 2025",
+                category: "Fisika",
+                color: "text-gray-300", 
+                icon: icons.Award ? <Award className="w-6 h-6 text-gray-300" /> : null
+            },
+            {
+                id: 2,
+                title: "OSN-PS 2025 Bidang Matematika",
+                level: "Tingkat Nasional",
+                organizer: "Sentral Olimpiade (Pahlawan Sains)",
+                result: "Silver Medal",
+                date: "18 November 2025",
+                category: "Matematika",
+                color: "text-gray-300",
+                icon: icons.Award ? <Award className="w-6 h-6 text-gray-300" /> : null
+            },
+            {
+                id: 3,
+                title: "FIMUNNES (Forum Ilmiah Matematika)",
+                level: "Nasional",
+                organizer: "Universitas Negeri Semarang (UNNES)",
+                result: "Peserta",
+                date: "19 Oktober 2025",
+                category: "Matematika",
+                color: "text-blue-400",
+                icon: icons.BookOpen ? <BookOpen className="w-6 h-6 text-blue-400" /> : null
+            },
+            {
+                id: 4,
+                title: "ESCO (Engineering Science Competition)",
+                level: "Perguruan Tinggi",
+                organizer: "HIMATIKA HARMONI",
+                result: "Finalis (Peringkat 1 Sesi Penyisihan)",
+                date: "17 September 2025",
+                category: "Matematika",
+                color: "text-yellow-400", 
+                icon: icons.Star ? <Star className="w-6 h-6 text-yellow-400" /> : null
+            }
+        ];
+
+        // Smooth Scroll Helper
+        const smoothScrollTo = (e, href, callback) => {
+            e.preventDefault();
+            const targetId = href.replace('#', '');
+            const element = document.getElementById(targetId);
+            if (element) {
+                const headerOffset = 80; // Offset untuk navbar fixed
+                const elementPosition = element.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: "smooth"
+                });
+            }
+            if (callback) callback();
+        };
+
+        const NavLink = ({ href, children, active, onClick }) => (
+            <a 
+                href={href} 
+                onClick={(e) => smoothScrollTo(e, href, onClick)}
+                className={`px-4 py-2 rounded-lg transition-all duration-300 cursor-pointer ${active ? 'bg-blue-600 text-white' : 'text-gray-300 hover:text-white hover:bg-slate-800'}`}
+            >
+                {children}
+            </a>
+        );
+
+        const App = () => {
+            const [isMenuOpen, setIsMenuOpen] = useState(false);
+            const [activeSection, setActiveSection] = useState('home');
+
+            useEffect(() => {
+                const handleScroll = () => {
+                    const sections = ['home', 'about', 'achievements']; 
+                    const scrollPosition = window.scrollY + 200;
+
+                    sections.forEach(section => {
+                        const element = document.getElementById(section);
+                        if (element && element.offsetTop <= scrollPosition && (element.offsetTop + element.offsetHeight) > scrollPosition) {
+                            setActiveSection(section);
+                        }
+                    });
+                };
+
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            return (
+                <div className="min-h-screen bg-slate-900 text-slate-100 overflow-x-hidden">
+                    
+                    {/* Navigation */}
+                    <nav className="fixed w-full z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="flex items-center justify-between h-16">
+                                <div className="flex-shrink-0 font-bold text-2xl tracking-tighter cursor-pointer" onClick={(e) => smoothScrollTo(e, '#home')}>
+                                    OSFA<span className="text-blue-500">.</span>
+                                </div>
+                                <div className="hidden md:block">
+                                    <div className="ml-10 flex items-baseline space-x-4">
+                                        <NavLink href="#home" active={activeSection === 'home'}>Home</NavLink>
+                                        <NavLink href="#about" active={activeSection === 'about'}>About Me</NavLink>
+                                        <NavLink href="#achievements" active={activeSection === 'achievements'}>Portfolio</NavLink>
+                                    </div>
+                                </div>
+                                <div className="md:hidden">
+                                    <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-gray-300 hover:text-white p-2">
+                                        {isMenuOpen ? (X ? <X size={24} /> : "Close") : (Menu ? <Menu size={24} /> : "Menu")}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        {/* Mobile Menu */}
+                        {isMenuOpen && (
+                            <div className="md:hidden bg-slate-800 px-2 pt-2 pb-3 space-y-1 sm:px-3 border-b border-slate-700 shadow-xl">
+                                <a href="#home" onClick={(e) => smoothScrollTo(e, '#home', () => setIsMenuOpen(false))} className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700 cursor-pointer">Home</a>
+                                <a href="#about" onClick={(e) => smoothScrollTo(e, '#about', () => setIsMenuOpen(false))} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-slate-700 cursor-pointer">About Me</a>
+                                <a href="#achievements" onClick={(e) => smoothScrollTo(e, '#achievements', () => setIsMenuOpen(false))} className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-slate-700 cursor-pointer">Portfolio</a>
+                            </div>
+                        )}
+                    </nav>
+
+                    {/* Home / Hero Section */}
+                    <section id="home" className="min-h-screen flex items-center justify-center pt-16 relative overflow-hidden">
+                        {/* Decorative blobs */}
+                        <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-blue-600/20 rounded-full blur-3xl animate-pulse"></div>
+                        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl"></div>
+                        
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+                            <div className="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-blue-400 uppercase bg-blue-400/10 rounded-full border border-blue-400/20">
+                                One Student Four Achievements
+                            </div>
+                            <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
+                                Rahman <span className="gradient-text">Hanif Putra</span>
+                            </h1>
+                            <p className="mt-4 text-xl text-slate-400 max-w-2xl mx-auto mb-8">
+                                Siswa SMA Islam Al-Azhar 16 BSB Semarang yang berdedikasi dalam Matematika, Fisika, dan Komputasi.
+                            </p>
+                            <div className="flex justify-center gap-4 flex-wrap">
+                                <a href="#achievements" onClick={(e) => smoothScrollTo(e, '#achievements')} className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-medium transition-all shadow-lg shadow-blue-600/25 flex items-center gap-2 cursor-pointer">
+                                    Explore Portfolio {Award && <Award size={18} />}
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* About Section */}
+                    <section id="about" className="py-20 bg-slate-800/50">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="max-w-3xl mx-auto">
+                                <div>
+                                    <h2 className="text-3xl font-bold mb-6 flex items-center gap-2">
+                                        <span className="w-8 h-1 bg-blue-500 rounded-full block"></span>
+                                        About Me
+                                    </h2>
+                                    <p className="text-slate-300 text-lg leading-relaxed mb-6">
+                                        Halo! Saya Rahman Hanif Putra, seorang siswa di <strong>SMA Islam Al-Azhar 16 BSB, Semarang</strong>. 
+                                        Saya memiliki ketertarikan mendalam pada bidang sains, khususnya Matematika dan Fisika.
+                                    </p>
+                                    <p className="text-slate-300 text-lg leading-relaxed mb-6">
+                                        Selain itu, saya juga memahami dasar-dasar <em>computing</em> dan senang mengeksplorasi tantangan baru. 
+                                        Di waktu luang, saya biasanya menghabiskan waktu bersama teman-teman (Ghaisan, Hanif, Irgi, Zano, Maeva, dan Vanya) 
+                                        atau menikmati burger favorit saya.
+                                    </p>
+                                    
+                                    <div className="grid grid-cols-2 gap-4 mt-8">
+                                        <div className="p-4 bg-slate-800 rounded-xl border border-slate-700">
+                                            <div className="text-blue-400 font-bold text-xl mb-1">Sekolah</div>
+                                            <div className="text-slate-400 text-sm">SMAI Al-Azhar 16 BSB</div>
+                                        </div>
+                                        <div className="p-4 bg-slate-800 rounded-xl border border-slate-700">
+                                            <div className="text-purple-400 font-bold text-xl mb-1">Lokasi</div>
+                                            <div className="text-slate-400 text-sm">Semarang, Jawa Tengah</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Achievements Section */}
+                    <section id="achievements" className="py-20">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="text-center mb-16">
+                                <h2 className="text-3xl md:text-4xl font-bold mb-4">Achievement Portfolio</h2>
+                                <p className="text-slate-400">Daftar kompetisi dan prestasi yang telah saya raih di Semester 1 (2025).</p>
+                            </div>
+
+                            <div className="grid md:grid-cols-2 gap-8">
+                                {achievements.map((item) => (
+                                    <div key={item.id} className="bg-slate-800/50 backdrop-blur rounded-2xl p-6 border border-slate-700 card-hover transition-all duration-300">
+                                        <div className="flex justify-between items-start mb-4">
+                                            <div className="p-3 bg-slate-900 rounded-lg border border-slate-700">
+                                                {item.icon}
+                                            </div>
+                                            <span className="text-xs font-mono text-slate-500 bg-slate-900 px-2 py-1 rounded border border-slate-800">
+                                                {item.date}
+                                            </span>
+                                        </div>
+                                        <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
+                                        
+                                        <div className="space-y-2 mb-6">
+                                            <div className="flex items-center gap-2 text-sm text-slate-400">
+                                                {MapPin && <MapPin size={14} />}
+                                                {item.organizer}
+                                            </div>
+                                            <div className="flex items-center gap-2 text-sm text-slate-400">
+                                                {Star && <Star size={14} />}
+                                                {item.level}
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center justify-between pt-4 border-t border-slate-700/50">
+                                            <span className={`font-bold ${item.color} flex items-center gap-2`}>
+                                                {item.result}
+                                            </span>
+                                            <button className="text-xs text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1">
+                                                Lihat Sertifikat {ExternalLink && <ExternalLink size={12} />}
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Footer */}
+                    <footer className="py-8 border-t border-slate-800 text-center text-slate-500 text-sm">
+                        <p>&copy; 2025 Rahman Hanif Putra (OSFA). All rights reserved.</p>
+                        <p className="mt-2 text-xs">Built with React & Tailwind</p>
+                    </footer>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
