@@ -25,7 +25,6 @@
             font-family: 'Inter', sans-serif;
             background-color: #0f172a; /* Slate 900 */
             color: #f8fafc;
-            /* scroll-behavior: smooth; <- Kita handle via JS untuk offset navbar */
         }
 
         /* Custom Scrollbar */
@@ -64,6 +63,7 @@
         const icons = window.lucideReact || {};
         const { Menu, X, Award, BookOpen, User, Mail, Instagram, Linkedin, ExternalLink, Download, MapPin, Calendar, Star } = icons;
 
+        // DATA PRESTASI - GANTI LINK SERTIFIKAT DI SINI
         const achievements = [
             {
                 id: 1,
@@ -74,6 +74,8 @@
                 date: "18 November 2025",
                 category: "Fisika",
                 color: "text-gray-300", 
+                // GANTI INI DENGAN LINK ASLI ANDA
+                certificateLink: "#link-sertifikat-fisika-anda" 
             },
             {
                 id: 2,
@@ -84,6 +86,8 @@
                 date: "18 November 2025",
                 category: "Matematika",
                 color: "text-gray-300",
+                // GANTI INI DENGAN LINK ASLI ANDA
+                certificateLink: "#link-sertifikat-matematika-anda"
             },
             {
                 id: 3,
@@ -94,6 +98,8 @@
                 date: "19 Oktober 2025",
                 category: "Matematika",
                 color: "text-blue-400",
+                // GANTI INI DENGAN LINK ASLI ANDA
+                certificateLink: "#link-sertifikat-fimunnes-anda"
             },
             {
                 id: 4,
@@ -104,6 +110,8 @@
                 date: "17 September 2025",
                 category: "Matematika",
                 color: "text-yellow-400", 
+                // GANTI INI DENGAN LINK ASLI ANDA
+                certificateLink: "#link-sertifikat-esco-anda"
             }
         ];
 
@@ -276,9 +284,15 @@
                                             <span className={`font-bold ${item.color} flex items-center gap-2`}>
                                                 {item.result}
                                             </span>
-                                            {/* Changed button to anchor tag with placeholder href */}
-                                            <a href="#" className="text-xs text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1">
-                                                Lihat Sertifikat {ExternalLink && <ExternalLink size={12} />}
+                                            {/* Link Sertifikat Dinamis */}
+                                            <a 
+                                                href={item.certificateLink} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="text-xs text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1 group"
+                                            >
+                                                Lihat Sertifikat 
+                                                {ExternalLink && <ExternalLink size={12} className="group-hover:translate-x-0.5 transition-transform" />}
                                             </a>
                                         </div>
                                     </div>
